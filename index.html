@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manraj Bal - Computer Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- FONTS --- */
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('Minecraftia-Regular.ttf') format('truetype');
+        }
+
+        :root {
+            --mc-green: #3c8527;
+            --btn-bg: #727272;
+            --btn-light: #a0a0a0;
+            --btn-dark: #3f3f3f;
+            --btn-hover-bg: #7e88bf;
+            --btn-hover-light: #9da8d6;
+            --btn-hover-dark: #4d5272;
+            --poem-cyan: #55FFFF;
+            --poem-green: #55FF55;
+            --poem-white: #FFFFFF;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            font-family: 'Minecraft', 'VT323', monospace;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            user-select: none;
+        }
+
+        /* --- BACKGROUND --- */
+        .background {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('loading.png'); 
+            background-size: cover;
+            background-position: center;
+            filter: blur(4px) brightness(0.6);
+            z-index: -2;
+            animation: pan 60s ease-in-out infinite alternate;
+        }
+
+        .vignette {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes pan {
+            0% { transform: scale(1.1); background-position: 20% 50%; }
+            100% { transform: scale(1.1); background-position: 80% 50%; }
+        }
+
+        /* --- LOGO --- */
+        .logo-container {
+            position: relative;
+            margin-bottom: 50px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .main-logo-img {
+            height: 80px; 
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            image-rendering: pixelated;
+        }
+
+        .splash-text {
+            position: absolute;
+            bottom: 0px;
+            right: -80px;
+            color: #ffff55;
+            font-size: 1.2rem;
+            transform: rotate(-20deg);
+            text-shadow: 2px 2px 0px #3f3f3f;
+            animation: bounce 0.5s infinite alternate;
+            width: 250px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @keyframes bounce {
+            from { transform: rotate(-20deg) scale(1); }
+            to { transform: rotate(-20deg) scale(1.05); }
+        }
+
+        /* --- BUTTONS --- */
+        .mc-button {
+            position: relative;
+            height: 40px;
+            font-family: inherit;
+            font-size: 1rem;
+            text-shadow: 2px 2px 0px #202020;
+            color: #e0e0e0;
+            background-color: var(--btn-bg);
+            border: 2px solid #000;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 2px 2px 0px var(--btn-light), inset -2px -2px 0px var(--btn-dark);
+        }
+
+        .mc-button:hover {
+            background-color: var(--btn-hover-bg);
+            color: #ffffa0;
+            box-shadow: inset 2px 2px 0px var(--btn-hover-light), inset -2px -2px 0px var(--btn-hover-dark);
+            text-shadow: 2px 2px 0px #2a2a2a;
+        }
+
+        .mc-button:active { border-color: #fff; }
+
+        .mc-button:disabled {
+            color: #a0a0a0;
+            cursor: default;
+            background-color: var(--btn-bg);
+            box-shadow: inset 2px 2px 0px var(--btn-light), inset -2px -2px 0px var(--btn-dark);
+        }
+
+        /* --- PIXEL ICONS FOR BUTTONS --- */
+        .pixel-icon {
+            width: 24px;  /* Sets a good size inside the 40px button */
+            height: 24px;
+            image-rendering: pixelated; /* Crucial for keeping pixel art crisp */
+            pointer-events: none; /* Ensures clicks register on the button, not the image */
+        }
+        
+        /* Update the existing icon-btn class to ensure perfect centering */
+        .icon-btn { 
+            width: 40px; 
+            flex: none; 
+            padding: 0; /* Removes default padding */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- MENUS --- */
+        #main-menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 400px;
+        }
+
+        .bottom-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 24px;
+        }
+        .bottom-row .mc-button { flex: 1; }
+        .icon-btn { width: 40px; flex: none; }
+
+        /* --- OVERLAYS --- */
+        .projects-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(16, 16, 16, 0.85); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            backdrop-filter: blur(5px);
+        }
+
+        .server-header {
+            width: 80%;
+            max-width: 700px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 1.2rem;
+            text-shadow: 2px 2px 0 #3f3f3f;
+        }
+
+        /* --- RESUME SCREEN (Split Layout) --- */
+        #resume-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 30;
+            
+            /* STONE BACKGROUND */
+            background-color: #333; 
+            background-image: url('stonetexture.jpg'); 
+            background-repeat: repeat;
+            background-size: 64px 64px;
+            
+            overflow: hidden;
+            display: flex;
+            align-items: center; 
+            justify-content: center;
+        }
+
+        .resume-layout {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            height: 80%;
+            gap: 50px; 
+            align-items: center;
+        }
+
+        .credits-container {
+            flex: 1; 
+            height: 100%;
+            overflow: hidden; 
+            position: relative;
+            text-align: left;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            border-right: 2px solid rgba(255,255,255,0.1); 
+        }
+
+        .crawling-text {
+            position: absolute;
+            top: 100%;
+            width: 100%;
+            animation: scrollCredits 45s linear infinite; 
+        }
+
+        @keyframes scrollCredits {
+            0% { top: 100%; }
+            100% { top: -200%; }
+        }
+
+        .poem-line {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .cyan { color: var(--poem-cyan); }
+        .green { color: var(--poem-green); }
+        .white { color: var(--poem-white); }
+        .indent { margin-left: 40px; }
+
+        .resume-controls {
+            position: absolute;
+            bottom: 30px;
+            z-index: 40;
+        }
+
+        /* Video Monitor */
+        .video-container {
+            flex: 1; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .minecraft-monitor {
+            width: 100%;
+            max-width: 500px;
+            border: 4px solid #000; 
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.5); 
+            background: #000;
+            position: relative;
+        }
+
+        .minecraft-monitor video {
+            width: 100%;
+            display: block;
+            opacity: 0.9; 
+        }
+        
+        .rec-overlay {
+            position: absolute;
+            top: 10px; right: 15px;
+            color: red;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 #000;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* --- CONTACT GRID --- */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 600px;
+            margin-bottom: 40px;
+        }
+
+        /* --- SERVER LIST --- */
+        .server-list-container {
+            width: 80%;
+            max-width: 700px;
+            height: 60%;
+            border: 2px solid #000;
+            background-color: rgba(0, 0, 0, 0.6); 
+            overflow-y: auto;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 10px #000;
+        }
+
+        .server-list-container::-webkit-scrollbar { width: 10px; background: #000; }
+        .server-list-container::-webkit-scrollbar-thumb { background: #888; border: 1px solid #fff; }
+
+        .server-entry {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            margin: 2px;
+        }
+        .server-entry:hover { background-color: rgba(255,255,255,0.05); }
+        .server-entry.selected { background-color: rgba(0,0,0,0.5); border: 1px solid #808080; }
+
+        .server-icon {
+            width: 64px; height: 64px;
+            margin-right: 12px;
+            border: 2px solid #3f3f3f;
+            display: flex; align-items: center; justify-content: center;
+            background: #2a2a2a; color: #555; font-size: 2rem;
+            overflow: hidden; 
+        }
+
+        .server-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            image-rendering: pixelated; 
+        }
+
+        .server-info { flex-grow: 1; }
+        .server-name { color: white; font-size: 1.1rem; margin-bottom: 4px; text-shadow: 2px 2px 0 #000; }
+        .server-motd { color: #aaa; font-size: 0.9rem; text-shadow: 1px 1px 0 #000; }
+        .ping-bars { color: var(--mc-green); font-weight: bold; letter-spacing: -2px; margin-right: 10px; }
+        .version-tag { color: #3f3f3f; margin-right: 10px; font-size: 0.8rem; }
+
+        .scanning-text { color: #555; text-align: center; margin-top: 20px; font-size: 1rem; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        .server-controls { width: 80%; max-width: 700px; display: flex; flex-direction: column; gap: 10px; }
+        .controls-row { display: flex; gap: 10px; justify-content: center; }
+        .controls-row .mc-button { flex: 1; }
+
+        .footer-text {
+            position: absolute;
+            bottom: 5px; width: 100%; display: flex; justify-content: space-between;
+            padding: 0 10px; box-sizing: border-box; font-size: 1rem; color: white; text-shadow: 2px 2px 0 #000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background"></div>
+    <div class="vignette"></div>
+
+    <div id="main-menu">
+        <div class="logo-container">
+            <img src="Manraj-Bal.png" alt="Manraj Bal" class="main-logo-img">
+            <div class="splash-text" id="splash-text">813!</div>
+        </div>
+
+        <div class="menu-container">
+            <button class="mc-button" onclick="showProjects()">Projects</button>
+            <button class="mc-button" onclick="showResume()">Resume</button>
+            <button class="mc-button" onclick="showContact()">Contact</button>
+
+           <div class="bottom-row">
+                <button class="mc-button icon-btn" onclick="window.open('https://www.linkedin.com/in/manraj-bal-a76a24388', '_blank')" title="LinkedIn">
+                    <img src="Linkden_pixel.png" alt="LinkedIn" class="pixel-icon">
+                </button>
+
+                <button class="mc-button" onclick="showAbout()">About Me..</button>
+                <button class="mc-button" onclick="window.close()">Quit Game</button>
+                
+                <button class="mc-button icon-btn" onclick="window.open('https://github.com/Manraj-Bal', '_blank')" title="GitHub">
+                    <img src="github_pixel_logo.png" alt="GitHub" class="pixel-icon">
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="resume-screen" style="display: none;">
+        <div class="resume-layout">
+            <div class="credits-container">
+                <div class="crawling-text">
+                    <div class="poem-line cyan">I see the candidate you mean.</div>
+                    <div class="poem-line green">Manraj Bal?</div>
+                    <div class="poem-line cyan">Yes. Take care. He has reached a high level now.</div>
+                    
+                    <br><br>
+                    <div class="poem-line cyan">He speaks the languages of creation.</div>
+                    <div class="poem-line green indent">C, Java, Python, JavaScript, HTML, CSS, SQL.</div>
+                    <div class="poem-line cyan">And he wields powerful tools.</div>
+                    <div class="poem-line green indent">React, Angular, Node.js, scikit-learn.</div>
+
+                    <br><br>
+                    <div class="poem-line cyan">Where did he acquire this knowledge?</div>
+                    <div class="poem-line green">Toronto Metropolitan University.</div>
+                    <div class="poem-line white indent">Bachelor of Science in Computer Engineering</div>
+                    <div class="poem-line white indent">2024 - Present</div>
+
+                    <br><br>
+                    <div class="poem-line cyan">What has he built in the dream of life?</div>
+                    <div class="poem-line green">Premier League Game Predictor.</div>
+                    <div class="poem-line white indent">Machine Learning models with 65% accuracy.</div>
+                    <br>
+                    <div class="poem-line green">Stock Market Predictor.</div>
+                    <div class="poem-line white indent">Forecasting S&P 500 movements.</div>
+
+                    <br><br>
+                    <div class="poem-line cyan">The universe is kind.</div>
+                    <div class="poem-line green">He is open to work.</div>
+                    <div class="poem-line cyan">You should hire him.</div>
+                    <div class="poem-line green">Wake up.</div>
+                </div>
+            </div>
+
+            <div class="video-container">
+                <div class="minecraft-monitor">
+                    <div class="rec-overlay">● REC</div>
+                    <video src="demo.mp4" autoplay loop muted playsinline></video>
+                </div>
+            </div>
+        </div>
+
+        <div class="resume-controls">
+            <button class="mc-button" onclick="showMainMenu()">Skip</button>
+        </div>
+    </div>
+
+    <div id="contact-screen" class="projects-overlay" style="display: none;">
+        <h2 class="server-header">Contact Options</h2>
+        
+        <div class="options-grid">
+            <div class="mc-button" style="cursor: default;">Status: Open to Work</div>
+            <div class="mc-button" style="cursor: default;">Location: Canada</div>
+
+            <button class="mc-button" onclick="window.open('https://www.linkedin.com/in/manraj-bal-a76a24388', '_blank')">LinkedIn Profile...</button>
+            <button class="mc-button" onclick="window.open('https://github.com/Manraj-Bal', '_blank')">GitHub Access...</button>
+            
+            <button class="mc-button" onclick="window.location.href='mailto:manraj.bal88@gmail.com'">Email Address...</button>
+            
+            <button class="mc-button" onclick="window.open('Manraj Bal Resume.pdf', '_blank')">View Resume (PDF)</button>
+        </div>
+
+        <button class="mc-button" style="width: 200px;" onclick="showMainMenu()">Done</button>
+    </div>
+
+    <div id="about-screen" class="projects-overlay" style="display: none;">
+        <h2 class="server-header">About Manraj</h2>
+        
+        <div class="server-list-container" style="display: flex; flex-direction: column; align-items: center; padding: 30px;">
+            <div style="margin-bottom: 20px; text-align: center;">
+                <div style="font-size: 1.2rem; color: #ffff55; margin-bottom: 5px;">Manraj Bal</div>
+                <div style="color: #aaa;">Computer Engineer</div>
+            </div>
+
+            <div style="width: 100%; max-width: 500px; text-align: left; font-size: 1.1rem; line-height: 1.6; color: #e0e0e0;">
+                <p>
+                    Computer Engineering student here, trying to build things that are practical, scale cleanly, and feel great to use.
+                </p>
+                <p>
+                    I also enjoy learning about perdections model, neural networks, and finance in my spare time.
+                </p>
+            </div>
+        </div>
+
+        <button class="mc-button" style="width: 200px; margin-top: 20px;" onclick="showMainMenu()">Done</button>
+    </div>
+
+    <div id="projects-screen" class="projects-overlay" style="display: none;">
+        <div class="server-header">Select Server</div>
+        
+        <div class="server-list-container">
+            <div class="server-entry" onclick="selectProject(this)">
+                <div class="server-icon">
+                    <img src="icon-sports.png" alt="Sports Icon">
+                </div>
+                <div class="server-info">
+                    <div class="server-name">Sports Betting App</div>
+                    <div class="server-motd">NBA/NFL Stats Tracking<br><span style="color:#555;">Java • React • SQL</span></div>
+                </div>
+                <span class="version-tag">1.20.4</span>
+                <div class="ping-bars">llll</div>
+            </div>
+
+            <div class="server-entry" onclick="selectProject(this)">
+                <div class="server-icon">
+                    <img src="icon-hardware.png" alt="Hardware Icon">
+                </div>
+                <div class="server-info">
+                    <div class="server-name">Hardware Simulation</div>
+                    <div class="server-motd">Verilog • FPGA • Low Level<br><span style="color:#555;">Status: Complete</span></div>
+                </div>
+                <span class="version-tag">1.0</span>
+                <div class="ping-bars">llll</div>
+            </div>
+            
+            <div class="scanning-text">Currently working on new projects...</div>
+        </div>
+
+        <div class="server-controls">
+            <div class="controls-row">
+                <button class="mc-button" id="btn-join" disabled>View Project</button>
+                <button class="mc-button" id="btn-direct" disabled>GitHub Access</button>
+            </div>
+            <div class="controls-row">
+                <button class="mc-button" onclick="alert('Refreshing list...')">Refresh</button>
+                <button class="mc-button" onclick="showMainMenu()">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-text">
+        <span>Minecraft 1.20.4 (Modded)</span>
+        <span>Copyright Mojang AB. Do not distribute!</span>
+    </div>
+
+    <script>
+        const splashes = [
+            "Wake up.", "We are chuds.", "The universe is kind.", 
+            "Everything you need is within you.", "Lock in!!"
+        ];
+        document.getElementById('splash-text').innerText = splashes[Math.floor(Math.random() * splashes.length)];
+
+        const mainMenu = document.getElementById('main-menu');
+        const projectsScreen = document.getElementById('projects-screen');
+        const contactScreen = document.getElementById('contact-screen');
+        const resumeScreen = document.getElementById('resume-screen');
+        const aboutScreen = document.getElementById('about-screen');
+
+        const joinBtn = document.getElementById('btn-join');
+        const directBtn = document.getElementById('btn-direct');
+
+        function showProjects() {
+            mainMenu.style.display = 'none';
+            projectsScreen.style.display = 'flex';
+        }
+
+        function showContact() {
+            mainMenu.style.display = 'none';
+            contactScreen.style.display = 'flex';
+        }
+
+        function showResume() {
+            mainMenu.style.display = 'none';
+            resumeScreen.style.display = 'flex';
+        }
+
+        function showAbout() {
+            mainMenu.style.display = 'none';
+            aboutScreen.style.display = 'flex';
+        }
+
+        function showMainMenu() {
+            projectsScreen.style.display = 'none';
+            contactScreen.style.display = 'none';
+            resumeScreen.style.display = 'none';
+            aboutScreen.style.display = 'none';
+            mainMenu.style.display = 'flex';
+        }
+
+        function selectProject(element) {
+            document.querySelectorAll('.server-entry').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            joinBtn.disabled = false;
+            directBtn.disabled = false;
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                showMainMenu();
+            }
+        });
+    </script>
+</body>
+</html>
