@@ -703,16 +703,21 @@
             try {
                 const ac = new (window.AudioContext || window.webkitAudioContext)();
                 const sr = ac.sampleRate;
-                const buf = ac.createBuffer(1, Math.floor(sr * 0.05), sr);
+                const buf = ac.createBuffer(1, Math.floor(sr * 0.1), sr);
                 const d = buf.getChannelData(0);
                 for (let i = 0; i < d.length; i++) {
-                    d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 3);
+                    d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (d.length * 0.3));
                 }
                 const src = ac.createBufferSource();
                 src.buffer = buf;
+                const lpf = ac.createBiquadFilter();
+                lpf.type = 'lowpass';
+                lpf.frequency.value = 300;
+                lpf.Q.value = 2.0;
                 const g = ac.createGain();
-                g.gain.value = 0.35;
-                src.connect(g);
+                g.gain.value = 0.7;
+                src.connect(lpf);
+                lpf.connect(g);
                 g.connect(ac.destination);
                 src.start();
             } catch(e) {}
